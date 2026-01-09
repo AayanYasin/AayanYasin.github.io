@@ -4,105 +4,339 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aayan Yasin | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS: This controls how the site looks */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
-            margin: 0;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        header {
-            text-align: center;
-            padding: 60px 0;
-        }
-        h1 { font-size: 3rem; margin-bottom: 10px; }
-        p.subtitle { color: #888; font-size: 1.2rem; }
-        
-        .section-title {
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            color: #ddd;
+        /* --- CSS VARIABLES & GLOBAL RESET --- */
+        :root {
+            --bg-main: #0a0a0a;      /* Deep black background */
+            --bg-secondary: #141414; /* Slightly lighter section bg */
+            --card-bg: #1e1e1e;      /* Card background */
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-color: #00f2fe; /* Vibrant cyan accent */
+            --accent-gradient: linear-gradient(45deg, #00f2fe, #4facfe); /* Eye-catching gradient */
+            --section-spacing: 100px;
         }
 
-        /* Project Cards */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        h1, h2, h3 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        h2.section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Little accent line under titles */
+        h2.section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
+        a { visibility: inherit; text-decoration: none; color: inherit; transition: 0.3s ease; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 80px;
+        }
+
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; }
+
+        .nav-links a {
+            margin-left: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-bottom: var(--section-spacing);
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem); /* Responsive font size */
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        /* Gradient Text Effect */
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero p.intro {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--accent-gradient);
+            color: var(--bg-main);
+            font-weight: 800;
+            border-radius: 4px;
+            box-shadow: 0 10px 20px -10px rgba(0, 242, 254, 0.5); /* Glow effect */
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px rgba(0, 242, 254, 0.7);
+        }
+
+        /* --- PROJECTS SECTION --- */
+        .projects-section {
+            background-color: var(--bg-secondary);
+            padding: var(--section-spacing) 0;
+        }
+
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-        .card {
-            background: #222;
-            padding: 20px;
-            border-radius: 8px;
-            transition: transform 0.2s;
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            background: #2a2a2a;
+
+        .project-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-7px);
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.5);
         }
-        .card h3 { margin-top: 0; }
-        .card a { color: #4da6ff; text-decoration: none; }
+
+        .card-image-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-weight: 800;
+            font-size: 2rem;
+        }
         
-        /* Contact Button */
-        .btn {
+        /* If you add real images later, delete the placeholder class above and use this:
+        .card-image img { width: 100%; height: 200px; object-fit: cover; } 
+        */
+
+        .card-content { padding: 30px; }
+
+        .project-tag {
             display: inline-block;
-            background: #fff;
-            color: #000;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .project-card p { color: var(--text-secondary); margin-bottom: 20px; }
+
+        .project-link { font-weight: 600; font-size: 0.9rem; }
+        .project-link:hover { margin-left: 5px; color: var(--accent-color); }
+
+        /* --- ABOUT & SKILLS SECTION --- */
+        .about-section { padding: var(--section-spacing) 0; }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 20px;
+        }
+
+        .skill-badge {
+            background: #222;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border: 1px solid #333;
+        }
+
+        /* --- CONTACT & FOOTER --- */
+        .contact-section {
+            text-align: center;
+            padding: var(--section-spacing) 0;
+            background: var(--bg-secondary);
+        }
+        
+        .contact-section h2 { margin-bottom: 20px; }
+        .contact-section p { color: var(--text-secondary); margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto;}
+
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE TWEAKS --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; /* Hide nav links on mobile for simplicity */ }
+            .about-grid { grid-template-columns: 1fr; }
+            h2.section-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>Aayan Yasin</h1>
-            <p class="subtitle">Developer & Designer</p>
-            <p>Welcome to my personal portfolio.</p>
-            <a href="mailto:your-email@example.com" class="btn">Contact Me</a>
-        </header>
-
-        <h2 class="section-title">My Projects</h2>
-        <div class="project-grid">
-            <div class="card">
-                <h3>ERP System</h3>
-                <p>A comprehensive Python-based ERP system for invoicing and inventory management.</p>
-                <a href="#">View Code &rarr;</a>
+        <nav>
+            <div class="logo">AY.</div>
+            <div class="nav-links">
+                <a href="#projects">Projects</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
             </div>
+        </nav>
 
-            <div class="card">
-                <h3>3D Modeling</h3>
-                <p>Showcase of 3D animations and renders created in Blender.</p>
-                <a href="#">View Art &rarr;</a>
-            </div>
+        <section class="hero">
+            <h1>Hi, I'm <span class="gradient-text">Aayan Yasin.</span><br>I build digital experiences.</h1>
+            <p class="intro">A multidisciplinary developer and designer specializing in Python applications, 3D visualization, and architectural planning.</p>
+            <a href="#projects" class="btn-main">View My Work</a>
+        </section>
+    </div>
 
-            <div class="card">
-                <h3>Retail Design</h3>
-                <p>Commercial layout designs and architectural planning.</p>
-                <a href="#">View Plans &rarr;</a>
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">Selected Projects</h2>
+            
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="card-image-placeholder">ERP</div>
+                    <div class="card-content">
+                        <span class="project-tag">Software Development</span>
+                        <h3>Python ERP System</h3>
+                        <p>A comprehensive enterprise resource planning tool built for inventory management and invoicing efficiency.</p>
+                        <a href="#" class="project-link">View Project &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="card-image-placeholder">3D</div>
+                    <div class="card-content">
+                        <span class="project-tag">Visualization</span>
+                        <h3>Architectural 3D Modeling</h3>
+                        <p>Photorealistic renders and animations created in Blender for commercial property visualization.</p>
+                        <a href="#" class="project-link">View Renders &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="card-image-placeholder">PLAN</div>
+                    <div class="card-content">
+                        <span class="project-tag">Design</span>
+                        <h3>Retail Space Planning</h3>
+                        <p>Commercial layout designs focusing on customer flow and spatial optimization.</p>
+                        <a href="#" class="project-link">View Plans &rarr;</a>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <h2 class="section-title">About Me</h2>
-        <p>I am passionate about building functional software and creating visual designs. Currently working on university projects and exploring new tech.</p>
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div>
+                    <h2 class="section-title" style="margin-bottom: 30px;">About Me</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">I am passionate about bridging the gap between functional software engineering and compelling visual design. I don't just build things that work; I build things that look and feel good to use.</p>
+                    <p style="color: var(--text-secondary);">Currently focusing on university projects and expanding my technical skillset.</p>
+                </div>
+                <div>
+                     <h3 style="margin-bottom: 20px;">My Toolkit</h3>
+                     <div class="skills-list">
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">HTML/CSS</span>
+                        <span class="skill-badge">JavaScript</span>
+                        <span class="skill-badge">Blender 3D</span>
+                        <span class="skill-badge">AutoCAD</span>
+                        <span class="skill-badge">Git</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <footer style="margin-top: 80px; color: #555; text-align: center;">
-            <p>&copy; 2026 Aayan Yasin</p>
-        </footer>
-    </div>
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Let's Connect</h2>
+            <p>Have a project in mind or just want to chat? Feel free to reach out via email.</p>
+            <a href="mailto:your-email@example.com" class="btn-main">Say Hello</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Designed & Built by Aayan Yasin &copy; 2026.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
