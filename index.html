@@ -442,7 +442,210 @@
     .social-link:hover {
         background: var(--accent); border-color: var(--accent); color: white; transform: translateY(-4px);
     }
-    
+
+    .gallery-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg); /* Use solid background to hide main nav */
+        backdrop-filter: blur(20px);
+        z-index: 3000; /* Increased from 2000 to 3000 */
+        display: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        overflow-y: auto;
+    }
+
+    .gallery-overlay.active { display: block; opacity: 1; }
+    .gallery-header {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 2rem; /* Increased top padding */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: var(--bg); /* Solid background to prevent overlap */
+        z-index: 3010;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .close-gallery {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1.5rem;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    .gallery-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .gallery-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;
+    }
+    .gallery-item {
+        background: var(--card); border-radius: 12px; overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;
+    }
+    .gallery-item:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .gallery-img-placeholder {
+        width: 100%; height: 250px; background: linear-gradient(135deg, #1a1a24, #2a2a3a);
+        display: flex; align-items: center; justify-content: center; color: var(--text-dim);
+    }
+    .gallery-info { padding: 1.5rem; }
+    .gallery-info h4 { margin-bottom: 0.5rem; color: var(--accent-bright); }
+    .gallery-info p { font-size: 0.9rem; color: var(--text-dim); }
+    body.no-scroll { overflow: hidden; }
+    body.no-scroll #nav {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .project-page-overlay {
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%;
+        background: var(--bg); 
+        z-index: 4000; 
+        visibility: hidden; /* Changed from display:none to visibility */
+        opacity: 0;
+        overflow-y: auto; 
+        transform: translateX(50px); /* Subtle slide start */
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-page-overlay.active { 
+        visibility: visible; 
+        opacity: 1;
+        transform: translateX(0); 
+    }
+
+    .project-page-container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+
+    .back-to-gallery {
+        background: none; border: none; color: var(--accent-bright);
+        cursor: pointer; font-family: 'JetBrains Mono', monospace;
+        font-size: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;
+    }
+
+    .project-header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+
+    .project-visuals-grid {
+        display: grid; grid-template-columns: 1fr; gap: 2rem; margin: 3rem 0;
+    }
+
+    .project-visuals-grid img {
+        width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .project-info-section {
+        display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;
+    }
+
+    .description-box h3, .action-box h3 {
+        margin-bottom: 1.5rem; color: var(--text); font-size: 1.2rem;
+    }
+
+    .description-box p { color: var(--text-dim); white-space: pre-wrap; }
+
+    .action-box {
+        background: var(--surface); padding: 2rem; border-radius: 16px; height: fit-content;
+    }
+
+    /* --- PROJECT SLIDER STYLES --- */
+    .slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slider-track img {
+        min-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+
+    .slider-btn:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev-btn { left: 1rem; }
+    .next-btn { right: 1rem; }
+
+    /* Hide buttons if only one image */
+    .slider-container.single-image .slider-btn {
+        display: none;
+    }
+
+    .gallery-img-container {
+        position: relative;
+        overflow: hidden;
+        background: var(--surface);
+    }
+
+    .img-overlay-text {
+        position: absolute;
+        inset: 0;
+        background: rgba(59, 130, 246, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .gallery-item:hover .img-overlay-text {
+        opacity: 1;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.05);
+        transition: transform 0.5s ease;
+    }
+        
     /* Animations */
     @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
@@ -506,11 +709,47 @@
 
         /* Contact: Stack Cards */
         .contact-grid { grid-template-columns: 1fr; }
+
+        .gallery-header {
+            padding: 1.5rem 1rem; /* Reduced padding for mobile */
+            gap: 10px;
+            flex-wrap: nowrap; /* Prevents button from jumping to a new line */
+            align-items: flex-start;
+        }
+
+        .gallery-header h2 {
+            font-size: 1.5rem; /* Smaller heading for mobile */
+            line-height: 1.2;
+        }
+
+        .header-info {
+            flex: 1; /* Allow text to take up remaining space */
+            min-width: 0; /* Required for text-overflow to work if needed */
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr; /* Force single column on mobile */
+            gap: 1rem;
+            padding: 0 1rem 2rem 1rem; /* Adjust content padding */
+        }
+
+        .gallery-item {
+            width: 100%;
+        }
+
+        .close-gallery {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            flex-shrink: 0; /* Prevents the button from being squashed */
+        }
     }
 
     @media (max-width: 768px) {
         .hero { padding-top: 60px; }
         section { padding: 4rem 1rem; }
+        .project-info-section { grid-template-columns: 1fr; gap: 2rem; }
+        .project-header h1 { font-size: 2rem; }
     }
 </style>
 </head>
@@ -581,7 +820,7 @@
         </div>
         
         <div class="projects-grid">
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('erp')">
                 <div class="project-icon">💻</div>
                 <div class="project-content">
                     <span class="project-tag">Development</span>
@@ -591,7 +830,7 @@
                 </div>
             </div>
             
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('3d')">
                 <div class="project-icon">🎨</div>
                 <div class="project-content">
                     <span class="project-tag">3D Visualization</span>
@@ -601,7 +840,7 @@
                 </div>
             </div>
             
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('retail')">
                 <div class="project-icon">🏗️</div>
                 <div class="project-content">
                     <span class="project-tag">Design</span>
@@ -611,7 +850,7 @@
                 </div>
             </div>
             
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('web')">
                 <div class="project-icon">🌐</div>
                 <div class="project-content">
                     <span class="project-tag">Web Development</span>
@@ -621,7 +860,7 @@
                 </div>
             </div>
             
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('games')">
                 <div class="project-icon">🎮</div>
                 <div class="project-content">
                     <span class="project-tag">Game Dev</span>
@@ -631,7 +870,7 @@
                 </div>
             </div>
             
-            <div class="project-card fade-in">
+            <div class="project-card fade-in" onclick="openGallery('mobile')">
                 <div class="project-icon">📱</div>
                 <div class="project-content">
                     <span class="project-tag">Mobile</span>
@@ -748,101 +987,52 @@
     <footer>
         <p>© 2026 Aayan Yasin. Designed & Built with passion.</p>
     </footer>
-    
-    <script>
-        // --- 1. Animated Particle Background ---
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
 
-        const particles = [];
-        const particleCount = 80;
+    <div id="galleryOverlay" class="gallery-overlay">
+        <div class="gallery-header">
+            <div class="header-info">
+                <span id="galleryTag" class="project-tag">Tag</span>
+                <h2 id="galleryTitle">Project Title</h2>
+            </div>
+            <button class="close-gallery" onclick="closeGallery()">&times;</button>
+        </div>
+        <div class="gallery-content">
+            <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+    </div>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-            }
+    <div id="projectPage" class="project-page-overlay">
+        <div class="project-page-container">
+            <button class="back-to-gallery" onclick="closeProjectPage()">← Back to Gallery</button>
+            
+            <div class="project-page-content">
+                <header class="project-header">
+                    <h1 id="pageTitle">Project Name</h1>
+                    <span id="pageTag" class="project-tag">Development</span>
+                </header>
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+                <div class="slider-container" id="sliderContainer">
+                    <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+                    <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
+                    <div id="pageVisuals" class="slider-track">
+                        </div>
+                </div>
 
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)';
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach((p1, i) => {
-                p1.update();
-                p1.draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 - distance/1000})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            });
-
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // --- 2. Scroll Reveal Animation ---
-        const observerOptions = { threshold: 0.1 };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // --- 3. Navbar Scroll Effect ---
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-    </script>
+                <div class="project-info-section">
+                    <div class="description-box">
+                        <h3>Project Overview</h3>
+                        <p id="pageDescription">Detailed project description goes here...</p>
+                    </div>
+                    
+                    <div id="downloadSection" class="action-box">
+                        <h3>Resources</h3>
+                        <a href="#" id="downloadBtn" class="btn btn-primary" download>Download Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="projects.js"></script>
+    <script src="main-logic.js"></script>
 </body>
 </html>
