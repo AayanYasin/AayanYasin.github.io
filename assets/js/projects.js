@@ -1,7 +1,7 @@
 const projectData = {
         'erp': {
         title: "Custom ERP Systems",
-        tags: ["Python", "Firebase", "Desktop App"],
+        tags: ["Python", "Firebase"],
         items: [
             { 
                 title: "Inventory Module", 
