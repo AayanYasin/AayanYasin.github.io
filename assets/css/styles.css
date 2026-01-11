@@ -711,9 +711,14 @@
 
     .project-info-section {
     display: grid; 
-    grid-template-columns: 2fr 1fr; 
+    grid-template-columns: 1.8fr 1fr; 
     gap: 4rem;
-    margin-top: 6rem; /* Increase this if you want even more space */
+    margin-top: 5rem;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 32px;
+    backdrop-filter: blur(10px);
 }
 
     .description-box h3, .action-box h3 {
@@ -729,8 +734,44 @@
     .description-box p { color: var(--text-dim); white-space: pre-wrap; }
 
     .action-box {
-        background: var(--surface); padding: 2rem; border-radius: 16px; height: fit-content;
-    }
+    background: var(--card);
+    padding: 2.5rem;
+    border-radius: 24px;
+    height: fit-content;
+    border: 1px solid var(--accent-glow);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 100px; /* Floats as you scroll description */
+}
+
+.action-box h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-box p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+}
+
+/* Premium Download Button */
+#downloadBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 1.2rem;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+}
 
     /* --- PROJECT SLIDER STYLES --- */
     /* Premium Slider Shadow */
@@ -859,34 +900,63 @@
     }
 
     /* --- Case Study Typography Fix --- */
-.description-box {
-    text-align: left; /* Align body text to the left */
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .description-box h3 {
-    text-align: center; /* Keep headers centered */
-    margin: 3rem 0 1.5rem 0;
-    color: var(--accent-bright);
+    text-align: left; /* Aligned left for better flow */
+    margin: 0 0 1.5rem 0;
     font-size: 1.8rem;
-    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--accent-bright), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.description-box p, .description-box li {
-    color: var(--text-dim);
+/* Added a decorative line before section headers */
+.description-box h3::before {
+    content: '';
+    width: 30px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+}
+
+.description-box p {
+    color: var(--text); /* Brighter for readability */
     line-height: 1.8;
-    margin-bottom: 1.2rem;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
 }
 
+/* Styled Lists for Features */
 .description-box ul {
-    padding-left: 1.5rem;
-    margin-bottom: 2rem;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
 }
 
 .description-box li {
-    margin-bottom: 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: transform 0.3s ease;
+}
+
+.description-box li:hover {
+    transform: translateX(10px);
+    border-color: var(--accent);
+}
+
+.description-box li::before {
+    content: '✦';
+    color: var(--accent-bright);
+    font-size: 1.2rem;
 }
 
     /* --- STAGGERED REVEAL ANIMATIONS --- */
