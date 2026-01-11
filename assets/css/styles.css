@@ -278,6 +278,7 @@
         flex-direction: column;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        cursor: pointer; /* <--- ADD THIS LINE */
     }
     
     .project-card::before {
@@ -370,13 +371,20 @@
         color: var(--text-dim);
     }
 
+    #pageTag {
+        display: flex;
+        justify-content: center; /* Centers the pill inside the container */
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
     /* --- 2. Gallery & Project Overlays: Bullet Style --- */
     #galleryTag, #pageTag {
         display: flex !important;
         flex-wrap: wrap;
-        justify-content: flex-start !important; /* Forces left alignment */
+        justify-content: center !important; /* Changed from flex-start to center */
         gap: 8px;
-        background: none !important; /* Removes the "ugly" outer bubble */
+        background: none !important; 
         border: none !important;
         padding: 0 !important;
         margin-bottom: 1rem;
@@ -573,7 +581,7 @@
     gap: 2rem;
     align-items: stretch;
 }
-    .gallery-item {
+.gallery-item {
     background: var(--card);
     border-radius: 16px;
     overflow: hidden;
@@ -582,6 +590,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    cursor: pointer; /* <--- ADD THIS LINE */
 }
     .gallery-item:hover {
         transform: translateY(-8px);
@@ -674,9 +683,13 @@
         transform: translateX(-5px);
     }
 
-    .project-header { 
-        margin-bottom: 4rem; 
-        text-align: center; 
+    .project-header {
+        margin-bottom: 4rem;
+        text-align: center;
+        display: flex; /* Ensure it's a flex container */
+        flex-direction: column; /* Stack tag above title */
+        align-items: center; /* Center them horizontally */
+        justify-content: center;
     }
 
     .project-header h1 { 
@@ -845,6 +858,37 @@
         transition: transform 0.5s ease;
     }
 
+    /* --- Case Study Typography Fix --- */
+.description-box {
+    text-align: left; /* Align body text to the left */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.description-box h3 {
+    text-align: center; /* Keep headers centered */
+    margin: 3rem 0 1.5rem 0;
+    color: var(--accent-bright);
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+}
+
+.description-box p, .description-box li {
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+}
+
+.description-box ul {
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.description-box li {
+    margin-bottom: 0.8rem;
+}
+
     /* --- STAGGERED REVEAL ANIMATIONS --- */
     .project-page-overlay.active .project-header,
     .project-page-overlay.active .slider-container,
@@ -928,6 +972,7 @@
        .project-card {
         flex-direction: row; /* Horizontal layout as discussed before */
         text-align: left;
+
     }
 
         .project-icon {
