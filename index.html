@@ -7,751 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-        --bg: #0a0a0f;
-        --surface: #13131a;
-        --card: #1a1a24;
-        --text: #e4e4e7;
-        --text-dim: #71717a;
-        --accent: #3b82f6;
-        --accent-bright: #60a5fa;
-        --accent-glow: rgba(59, 130, 246, 0.3);
-        --purple: #a855f7;
-        --cyan: #06b6d4;
-    }
-    
-    html { scroll-behavior: smooth; }
-    
-    body {
-        font-family: 'Space Grotesk', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-        line-height: 1.6;
-    }
-    
-    ::selection { background: var(--accent); color: white; }
-    
-    /* Animated Background */
-    .bg-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        opacity: 0.4;
-        pointer-events: none;
-    }
-    
-    /* --- NAVIGATION --- */
-    nav {
-        position: fixed;
-        z-index: 1000;
-        transition: all 0.3s ease;
-    }
-
-    /* DESKTOP NAV */
-    @media (min-width: 901px) {
-        nav {
-            top: 0;
-            width: 100%;
-            backdrop-filter: blur(12px);
-            background: rgba(10, 10, 15, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { display: block; font-weight: 700; font-size: 1.5rem; background: linear-gradient(135deg, var(--accent-bright), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; transition: transform 0.3s ease; }
-        .logo:hover { transform: scale(1.05); }
-        
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 500; position: relative; transition: color 0.3s ease; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
-        .nav-links a:hover { color: var(--text); }
-        .nav-links a:hover::after { width: 100%; }
-        
-        .nav-icon { display: none; }
-    }
-
-    /* MOBILE NAV (Floating Dock) */
-    @media (max-width: 900px) {
-        nav {
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: rgba(20, 20, 30, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            padding: 0.8rem 2rem;
-        }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0; }
-        .logo { display: none; }
-        
-        .nav-links { display: flex; justify-content: space-between; width: 100%; margin: 0; padding: 0; list-style: none; }
-        
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 1.4rem; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            transition: transform 0.2s ease, color 0.2s ease;
-        }
-        
-        .nav-icon { display: block; font-size: 1.4rem; line-height: 1; }
-        .nav-text { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .nav-links a:hover, .nav-links a:active { color: var(--accent-bright); transform: translateY(-3px); }
-        
-        body { padding-bottom: 100px; }
-    }
-    
-    /* --- HERO SECTION --- */
-    .hero {
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        padding: 0 2rem;
-        z-index: 1;
-    }
-    
-    .hero-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-    }
-
-    .hero-text { flex: 1.3; min-width: 0; }
-    
-    .hero-tag {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 50px;
-        color: var(--accent-bright);
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        animation: fadeSlideDown 0.8s ease;
-    }
-    
-    h1 {
-        font-size: clamp(2.5rem, 5vw, 4.2rem);
-        font-weight: 700;
-        line-height: 1.15;
-        margin-bottom: 1.5rem;
-        animation: fadeSlideUp 0.8s ease 0.2s both;
-    }
-    
-    .gradient-text {
-        background: linear-gradient(135deg, var(--accent-bright), var(--purple), var(--cyan));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: gradientShift 8s ease infinite;
-        background-size: 200% 200%;
-        white-space: nowrap;
-    }
-    
-    @keyframes gradientShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-    
-    .hero-description {
-        font-size: 1.1rem;
-        color: var(--text-dim);
-        max-width: 550px;
-        margin-bottom: 2.5rem;
-        animation: fadeSlideUp 0.8s ease 0.4s both;
-    }
-    
-    .cta-buttons {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        animation: fadeSlideUp 0.8s ease 0.6s both;
-    }
-
-    .hero-visual {
-        flex: 0.9;
-        display: flex;
-        justify-content: center;
-        position: relative;
-        animation: fadeSlideUp 0.8s ease 0.4s both;
-    }
-
-    .profile-wrapper {
-        position: relative;
-        width: 320px;
-        height: 320px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .profile-wrapper::before {
-        content: ''; position: absolute; inset: -4px; border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent), var(--purple), var(--cyan));
-        z-index: -1; filter: blur(2px);
-    }
-
-    .profile-wrapper::after {
-        content: ''; position: absolute; inset: 0; border-radius: 50%;
-        background: var(--accent); z-index: -2; filter: blur(60px); opacity: 0.2;
-    }
-
-    .profile-img {
-        width: 100%; height: 100%; object-fit: cover;
-        border-radius: 50%; border: 4px solid var(--bg); background-color: var(--card);
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-    }
-    
-    /* Buttons */
-    .btn {
-        display: inline-block; padding: 1rem 2rem; border-radius: 8px;
-        font-weight: 600; text-decoration: none; transition: all 0.3s ease;
-        cursor: pointer; border: none; font-size: 1rem;
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, var(--accent), var(--purple));
-        color: white; box-shadow: 0 4px 20px var(--accent-glow);
-        position: relative; overflow: hidden;
-    }
-    
-    .btn-primary::before {
-        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s ease;
-    }
-    
-    .btn-primary:hover::before { left: 100%; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px var(--accent-glow); }
-    
-    .btn-secondary {
-        background: rgba(255, 255, 255, 0.05); color: var(--text);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.1); border-color: var(--accent); transform: translateY(-2px);
-    }
-    
-    /* --- PROJECTS SECTION --- */
-    section { position: relative; padding: 8rem 2rem; z-index: 1; }
-    .section-title { text-align: center; margin-bottom: 4rem; }
-    .section-title h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
-    .section-title p { color: var(--text-dim); font-size: 1.1rem; }
-    
-    .projects-grid {
-        max-width: 1200px; margin: 0 auto;
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
-    }
-    
-    .project-card {
-        background: var(--card); border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 16px; overflow: hidden; transition: all 0.4s ease;
-        cursor: pointer; position: relative;
-    }
-    
-    .project-card::before {
-        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-        background: linear-gradient(90deg, var(--accent), var(--purple), var(--cyan));
-        transform: scaleX(0); transition: transform 0.4s ease;
-    }
-    .project-card:hover::before { transform: scaleX(1); }
-    .project-card:hover {
-        transform: translateY(-8px); border-color: rgba(59, 130, 246, 0.3);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    }
-    
-    .project-icon {
-        height: 200px; display: flex; align-items: center; justify-content: center;
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
-        font-size: 4rem; transition: all 0.4s ease;
-    }
-    .project-card:hover .project-icon { transform: scale(1.1); }
-    
-    .project-content { padding: 2rem; }
-    .project-tag {
-        display: inline-block; padding: 0.25rem 0.75rem;
-        background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 50px; color: var(--accent-bright); font-size: 0.75rem;
-        font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    
-    .project-content h3 { font-size: 1.5rem; margin-bottom: 0.75rem; transition: color 0.3s ease; }
-    .project-card:hover h3 { color: var(--accent-bright); }
-    .project-content p { color: var(--text-dim); line-height: 1.6; margin-bottom: 1.5rem; }
-    
-    .project-link {
-        color: var(--accent-bright); font-weight: 600; display: inline-flex;
-        align-items: center; gap: 0.5rem; transition: gap 0.3s ease;
-    }
-    .project-card:hover .project-link { gap: 1rem; }
-    
-    /* --- QUALIFICATIONS SECTION (SYMMETRICAL) --- */
-    .qualifications-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* 50/50 Split */
-        gap: 2rem;
-        align-items: stretch; /* Both cards equal height */
-    }
-
-    /* Shared Card Style for both Skills and Education */
-    .qual-card, .edu-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 24px;
-        padding: 2rem;
-        height: 100%;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .qual-card:hover, .edu-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--accent);
-        box-shadow: 0 10px 40px -10px var(--accent-glow);
-    }
-
-    /* Card Glow Effect */
-    .edu-bg-glow {
-        position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle at center, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
-        opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
-    }
-    .qual-card:hover .edu-bg-glow, .edu-card:hover .edu-bg-glow { opacity: 1; }
-
-    /* Skills Grid inside the Card */
-    .skills-grid { 
-        display: flex; 
-        flex-wrap: wrap; 
-        justify-content: flex-start; /* Left align */
-        gap: 0.8rem;
-    }
-    
-    .skill-item {
-        background: rgba(255, 255, 255, 0.05); /* Slightly lighter inside card */
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        padding: 0.8rem 1.5rem; 
-        border-radius: 12px; 
-        text-align: center;
-        transition: all 0.3s ease; 
-        cursor: default; 
-        white-space: nowrap;
-    }
-    .skill-item:hover {
-        background: rgba(59, 130, 246, 0.2); 
-        border-color: var(--accent);
-        transform: translateY(-2px);
-    }
-    .skill-item span { font-weight: 600; font-size: 0.95rem; }
-
-    /* Education Content inside the Card */
-    .edu-degree-label {
-        display: block; font-size: 0.85rem; text-transform: uppercase;
-        letter-spacing: 1px; color: var(--accent-bright); font-weight: 700; margin-bottom: 0.5rem;
-    }
-    .edu-school { font-size: 1.1rem; color: var(--text-dim); }
-    .edu-badges { display: flex; align-items: center; gap: 0.8rem; }
-    .edu-year { font-family: 'JetBrains Mono', monospace; color: var(--text); font-weight: 600; font-size: 1rem; }
-    .edu-status-badge {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: rgba(16, 185, 129, 0.1); color: #34d399;
-        padding: 0.4rem 1rem; border-radius: 50px;
-        font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-    .pulsing-dot {
-        width: 8px; height: 8px; background-color: #34d399;
-        border-radius: 50%; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
-        animation: pulse-green 2s infinite;
-    }
-
-    /* --- CONTACT GRID --- */
-    .contact-container { max-width: 900px; margin: 0 auto; text-align: center; }
-    .contact-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem; margin: 3rem 0; text-align: left;
-    }
-    .contact-card {
-        background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 16px; padding: 1.5rem; display: flex; align-items: center;
-        gap: 1rem; transition: all 0.3s ease; text-decoration: none; cursor: pointer;
-    }
-    .contact-card:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent); transform: translateY(-4px); }
-    .contact-icon {
-        font-size: 1.5rem; width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .contact-details { min-width: 0; }
-    .contact-details span {
-        display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 4px;
-        text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
-    }
-    .contact-details h3 {
-        font-size: 1rem; color: var(--text); margin: 0;
-        font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-
-    /* Footer */
-    footer {
-        padding: 2rem; text-align: center; color: var(--text-dim);
-        border-top: 1px solid rgba(255, 255, 255, 0.05); position: relative; z-index: 1;
-    }
-    
-    .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
-    .social-link {
-        width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
-        display: flex; align-items: center; justify-content: center; color: var(--text-dim);
-        transition: all 0.3s ease;
-    }
-    .social-link:hover {
-        background: var(--accent); border-color: var(--accent); color: white; transform: translateY(-4px);
-    }
-
-    .gallery-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--bg); /* Use solid background to hide main nav */
-        backdrop-filter: blur(20px);
-        z-index: 3000; /* Increased from 2000 to 3000 */
-        display: none;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        overflow-y: auto;
-    }
-
-    .gallery-overlay.active { display: block; opacity: 1; }
-    .gallery-header {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2.5rem 2rem; /* Increased top padding */
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        background: var(--bg); /* Solid background to prevent overlap */
-        z-index: 3010;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .close-gallery {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 1.5rem;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-    .gallery-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    .gallery-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;
-    }
-    .gallery-item {
-        background: var(--card); border-radius: 12px; overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;
-    }
-    .gallery-item:hover { transform: translateY(-5px); border-color: var(--accent); }
-    .gallery-img-placeholder {
-        width: 100%; height: 250px; background: linear-gradient(135deg, #1a1a24, #2a2a3a);
-        display: flex; align-items: center; justify-content: center; color: var(--text-dim);
-    }
-    .gallery-info { padding: 1.5rem; }
-    .gallery-info h4 { margin-bottom: 0.5rem; color: var(--accent-bright); }
-    .gallery-info p { font-size: 0.9rem; color: var(--text-dim); }
-    body.no-scroll { overflow: hidden; }
-    body.no-scroll #nav {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-    }
-
-    .project-page-overlay {
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%;
-        background: var(--bg); 
-        z-index: 4000; 
-        visibility: hidden; /* Changed from display:none to visibility */
-        opacity: 0;
-        overflow-y: auto; 
-        transform: translateX(50px); /* Subtle slide start */
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .project-page-overlay.active { 
-        visibility: visible; 
-        opacity: 1;
-        transform: translateX(0); 
-    }
-
-    .project-page-container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
-
-    .back-to-gallery {
-        background: none; border: none; color: var(--accent-bright);
-        cursor: pointer; font-family: 'JetBrains Mono', monospace;
-        font-size: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;
-    }
-
-    .project-header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-
-    .project-visuals-grid {
-        display: grid; grid-template-columns: 1fr; gap: 2rem; margin: 3rem 0;
-    }
-
-    .project-visuals-grid img {
-        width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .project-info-section {
-        display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;
-    }
-
-    .description-box h3, .action-box h3 {
-        margin-bottom: 1.5rem; color: var(--text); font-size: 1.2rem;
-    }
-
-    .description-box p { color: var(--text-dim); white-space: pre-wrap; }
-
-    .action-box {
-        background: var(--surface); padding: 2rem; border-radius: 16px; height: fit-content;
-    }
-
-    /* --- PROJECT SLIDER STYLES --- */
-    .slider-container {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .slider-track {
-        display: flex;
-        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .slider-track img {
-        min-width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-
-    .slider-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        font-size: 1.2rem;
-    }
-
-    .slider-btn:hover {
-        background: var(--accent);
-        border-color: var(--accent);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .prev-btn { left: 1rem; }
-    .next-btn { right: 1rem; }
-
-    /* Hide buttons if only one image */
-    .slider-container.single-image .slider-btn {
-        display: none;
-    }
-
-    .gallery-img-container {
-        position: relative;
-        overflow: hidden;
-        background: var(--surface);
-    }
-
-    .img-overlay-text {
-        position: absolute;
-        inset: 0;
-        background: rgba(59, 130, 246, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .gallery-item:hover .img-overlay-text {
-        opacity: 1;
-    }
-
-    .gallery-item:hover img {
-        transform: scale(1.05);
-        transition: transform 0.5s ease;
-    }
-        
-    /* Animations */
-    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-    @keyframes pulse-green {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
-    }
-    
-    /* ========================================= */
-    /* MOBILE-SPECIFIC OVERRIDES           */
-    /* ========================================= */
-    @media (max-width: 900px) {
-        /* Hero: Stacked and Centered */
-        .hero-container { flex-direction: column-reverse; text-align: center; gap: 3rem; }
-        .hero-description { margin: 0 auto 2.5rem; }
-        
-        .cta-buttons {
-            flex-direction: column;
-            width: 100%;
-            gap: 1rem;
-        }
-        
-        .btn { width: 100%; display: block; text-align: center; }
-        .hero-text { flex: auto; }
-        .hero-visual { flex: auto; width: 100%; }
-        .profile-wrapper { width: 280px; height: 280px; }
-
-        /* Projects: 2-Column Tile Layout */
-        .projects-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-        }
-        
-        .project-card { border-radius: 12px; display: flex; flex-direction: column; }
-        .project-icon { height: 90px; font-size: 2.5rem; }
-        
-        .project-content { 
-            padding: 1rem 0.5rem;
-            text-align: center;
-            display: flex; flex-direction: column; align-items: center; flex-grow: 1;
-        }
-        
-        .project-content p { display: none; }
-        .project-content h3 { font-size: 1rem; margin-bottom: 0.8rem; line-height: 1.3; }
-        .project-tag { font-size: 0.6rem; padding: 2px 8px; margin-bottom: 0.5rem; }
-        .project-link { font-size: 0.8rem; margin-top: auto; }
-
-        /* Qualifications: Stack Vertically on Mobile */
-        .qualifications-container {
-            grid-template-columns: 1fr; 
-            gap: 2rem;
-        }
-        .qual-card, .edu-card { padding: 1.5rem; height: auto; }
-        
-        .skills-grid { justify-content: center; }
-        .skill-item { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
-
-        /* Contact: Stack Cards */
-        .contact-grid { grid-template-columns: 1fr; }
-
-        .gallery-header {
-            padding: 1.5rem 1rem; /* Reduced padding for mobile */
-            gap: 10px;
-            flex-wrap: nowrap; /* Prevents button from jumping to a new line */
-            align-items: flex-start;
-        }
-
-        .gallery-header h2 {
-            font-size: 1.5rem; /* Smaller heading for mobile */
-            line-height: 1.2;
-        }
-
-        .header-info {
-            flex: 1; /* Allow text to take up remaining space */
-            min-width: 0; /* Required for text-overflow to work if needed */
-        }
-
-        .gallery-grid {
-            grid-template-columns: 1fr; /* Force single column on mobile */
-            gap: 1rem;
-            padding: 0 1rem 2rem 1rem; /* Adjust content padding */
-        }
-
-        .gallery-item {
-            width: 100%;
-        }
-
-        .close-gallery {
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-            flex-shrink: 0; /* Prevents the button from being squashed */
-        }
-    }
-
-    @media (max-width: 768px) {
-        .hero { padding-top: 60px; }
-        section { padding: 4rem 1rem; }
-        .project-info-section { grid-template-columns: 1fr; gap: 2rem; }
-        .project-header h1 { font-size: 2rem; }
-    }
-</style>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Aayan Yasin - Full-stack developer & 3D designer crafting elegant solutions through code, design, and visualization. Specializing in custom software, architectural rendering, and web experiences.">
+    <meta name="keywords" content="Aayan Yasin, Full-stack Developer, 3D Designer, Software Development, Web Development, Architectural Rendering, Digital Experiences, Custom Software, E-Commerce Solutions, ERP Systems, Flutter Apps, Game Development">
+    <meta name="author" content="Aayan Yasin">
+    <meta name="copyright" content="Aayan Yasin">
+    <meta name="language" content="en">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="google" content="notranslate">
 </head>
 <body>
     <canvas class="bg-canvas" id="bgCanvas"></canvas>
@@ -823,7 +88,7 @@
             <div class="project-card fade-in" onclick="openGallery('erp')">
                 <div class="project-icon">💻</div>
                 <div class="project-content">
-                    <span class="project-tag">Development</span>
+                    <div class="project-tag"></div>
                     <h3>Custom ERP Systems</h3>
                     <p>Scalable enterprise resource planning solutions with inventory automation, analytics, and streamlined workflows.</p>
                     <span class="project-link">Explore →</span>
@@ -833,7 +98,7 @@
             <div class="project-card fade-in" onclick="openGallery('3d')">
                 <div class="project-icon">🎨</div>
                 <div class="project-content">
-                    <span class="project-tag">3D Visualization</span>
+                    <div class="project-tag"></div>
                     <h3>Architectural Rendering</h3>
                     <p>Photorealistic 3D models and animations for commercial properties using Blender and advanced lighting techniques.</p>
                     <span class="project-link">View Gallery →</span>
@@ -843,7 +108,7 @@
             <div class="project-card fade-in" onclick="openGallery('retail')">
                 <div class="project-icon">🏗️</div>
                 <div class="project-content">
-                    <span class="project-tag">Design</span>
+                    <div class="project-tag"></div>
                     <h3>Retail Space Planning</h3>
                     <p>Strategic commercial layout designs optimizing customer flow, visibility, and spatial efficiency.</p>
                     <span class="project-link">See Plans →</span>
@@ -853,7 +118,7 @@
             <div class="project-card fade-in" onclick="openGallery('web')">
                 <div class="project-icon">🌐</div>
                 <div class="project-content">
-                    <span class="project-tag">Web Development</span>
+                    <div class="project-tag"></div>
                     <h3>E-Commerce Solutions</h3>
                     <p>High-performance online stores on Shopify, WordPress, and custom stacks with seamless user experiences.</p>
                     <span class="project-link">Visit Sites →</span>
@@ -863,7 +128,7 @@
             <div class="project-card fade-in" onclick="openGallery('games')">
                 <div class="project-icon">🎮</div>
                 <div class="project-content">
-                    <span class="project-tag">Game Dev</span>
+                    <div class="project-tag"></div>
                     <h3>2D Game Development</h3>
                     <p>Interactive 2D games and physics simulations built with Python, Pygame, and creative mechanics.</p>
                     <span class="project-link">Play Games →</span>
@@ -873,7 +138,7 @@
             <div class="project-card fade-in" onclick="openGallery('mobile')">
                 <div class="project-icon">📱</div>
                 <div class="project-content">
-                    <span class="project-tag">Mobile</span>
+                    <div class="project-tag"></div>
                     <h3>Flutter Applications</h3>
                     <p>Cross-platform mobile apps for iOS and Android with beautiful, responsive interfaces.</p>
                     <span class="project-link">View Apps →</span>
@@ -898,16 +163,6 @@
                 </h3>
 
                 <div class="skills-grid">
-                    <div class="skill-item"><span>Python</span></div>
-                    <div class="skill-item"><span>Pygame</span></div>
-                    <div class="skill-item"><span>Flutter Flow</span></div>
-                    <div class="skill-item"><span>Shopify</span></div>
-                    <div class="skill-item"><span>WordPress</span></div>
-                    <div class="skill-item"><span>Git</span></div>
-                    <div class="skill-item"><span>HTML/CSS</span></div>
-                    <div class="skill-item"><span>AutoCAD</span></div>
-                    <div class="skill-item"><span>3Ds Max</span></div>
-                    <div class="skill-item"><span>Editing</span></div>
                 </div>
             </div>
         </div>
@@ -1002,32 +257,47 @@
     </div>
 
     <div id="projectPage" class="project-page-overlay">
+        <button class="back-to-gallery" onclick="closeProjectPage()">
+            <span>←</span> Back to Work
+        </button>
+        
         <div class="project-page-container">
-            <button class="back-to-gallery" onclick="closeProjectPage()">← Back to Gallery</button>
-            
-            <div class="project-page-content">
-                <header class="project-header">
-                    <h1 id="pageTitle">Project Name</h1>
-                    <span id="pageTag" class="project-tag">Development</span>
-                </header>
+            <header class="project-header">
+                <span id="pageTag" class="tag-pill">Category</span>
+                <h1 id="pageTitle" class="gradient-text">Project Name</h1>
+            </header>
 
-                <div class="slider-container" id="sliderContainer">
-                    <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
-                    <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
-                    <div id="pageVisuals" class="slider-track">
-                        </div>
+            <div class="slider-container" id="sliderContainer">
+                <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+                <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
+                <div id="pageVisuals" class="slider-track"></div>
+            </div>
+
+            <div class="project-meta-bar">
+                <div class="meta-item">
+                    <span>Role</span>
+                    <p>Lead Developer & Designer</p>
                 </div>
+                <div class="meta-item">
+                    <span>Tools Used</span>
+                    <p id="metaTech">Python, Blender, Figma</p>
+                </div>
+                <div class="meta-item">
+                    <span>Project Year</span>
+                    <p>2026</p>
+                </div>
+            </div>
 
-                <div class="project-info-section">
-                    <div class="description-box">
-                        <h3>Project Overview</h3>
-                        <p id="pageDescription">Detailed project description goes here...</p>
-                    </div>
-                    
-                    <div id="downloadSection" class="action-box">
-                        <h3>Resources</h3>
-                        <a href="#" id="downloadBtn" class="btn btn-primary" download>Download Project</a>
-                    </div>
+            <div class="project-info-section">
+                <div class="description-box">
+                    <h3>The Challenge</h3>
+                    <p id="pageDescription">Detailed project description...</p>
+                </div>
+                
+                <div id="downloadSection" class="action-box">
+                    <h3>Deliverables</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem;">Ready to review the source or high-res assets?</p>
+                    <a href="#" id="downloadBtn" class="btn btn-primary" download style="width: 100%; text-align: center;">Get Project Files</a>
                 </div>
             </div>
         </div>
