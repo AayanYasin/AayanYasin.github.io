@@ -629,6 +629,79 @@
         animation: pulse-green 2s infinite;
     }
 
+    /* --- EXPERIENCE SECTION STYLES --- */
+    .experience-container {
+        max-width: 1200px;
+        margin: 4rem auto 0;
+    }
+
+    .experience-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 2.5rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .experience-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 40px -10px var(--accent-glow);
+    }
+
+    .experience-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+    }
+
+    .experience-title-group h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.3rem;
+        color: var(--text);
+    }
+
+    .experience-company {
+        color: var(--accent-bright);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .experience-date {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .experience-description {
+        color: var(--text-dim);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+    }
+
+    .experience-highlights {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+
+    .highlight-tag {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: var(--accent-bright);
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
     /* --- CONTACT GRID --- */
     .contact-container { max-width: 900px; margin: 0 auto; text-align: center; }
     .contact-grid {
@@ -1104,6 +1177,13 @@
     font-size: 1.2rem;
 }
 
+.experience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
     /* --- STAGGERED REVEAL ANIMATIONS --- */
     .project-page-overlay.active .project-header,
     .project-page-overlay.active .slider-container,
@@ -1257,7 +1337,7 @@
         border-right: 1px solid rgba(255, 255, 255, 0.05);
         flex-shrink: 0;
     }
-        
+
     .project-content {
         align-items: flex-start;
         padding: 1rem 1.2rem;
@@ -1350,4 +1430,11 @@
         .project-info-section { grid-template-columns: 4fr; gap: 2rem; }
         .project-header h1 { font-size: 2rem; }
         .proof-bar { justify-content: center; }
+        .experience-grid {
+            grid-template-columns: 1fr;
+        }
+        .experience-header {
+            flex-direction: column;
+            gap: 5px;
+        }
 }
