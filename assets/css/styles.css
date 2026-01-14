@@ -192,7 +192,71 @@
         animation: fadeSlideUp 0.8s ease 0.4s both;
     }
 
+    /* --- Corrected Snapshot Stack Styling --- */
+    .visual-stack {
+        position: relative;
+        width: 320px;
+        height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .snapshot {
+        position: absolute;
+        width: 220px;
+        height: 140px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        z-index: -1; /* Place behind profile */
+        opacity: 0.5;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--card);
+        pointer-events: none; /* Prevents screenshots from blocking profile clicks */
+    }
+
+    .snapshot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(0.5) blur(1px); /* Adds depth */
+        transition: filter 0.4s ease;
+    }
+
+    /* FIX: Define base position in a variable so the animation can use it */
+    .s1 { 
+        --base-pos: translate(-110px, -70px) rotate(-12deg); 
+        transform: var(--base-pos);
+        animation: snapshotFloat 7s ease-in-out infinite; 
+    }
+    .s2 { 
+        --base-pos: translate(110px, -50px) rotate(8deg); 
+        transform: var(--base-pos);
+        animation: snapshotFloat 9s ease-in-out infinite 1s; 
+    }
+    .s3 { 
+        --base-pos: translate(-30px, 90px) rotate(5deg); 
+        transform: var(--base-pos);
+        animation: snapshotFloat 8s ease-in-out infinite 0.5s; 
+    }
+
+    /* New Animation: Combines the base variable with bobbing movement */
+    @keyframes snapshotFloat {
+        0%, 100% { transform: var(--base-pos) translateY(0); }
+        50% { transform: var(--base-pos) translateY(-15px); }
+    }
+
+    /* Interactive Hover Effect */
+    .visual-stack:hover .snapshot { opacity: 1; z-index: 1; }
+    .visual-stack:hover .snapshot img { filter: saturate(1) blur(0); }
+    .visual-stack:hover .s1 { transform: translate(-140px, -100px) rotate(-15deg); }
+    .visual-stack:hover .s2 { transform: translate(140px, -80px) rotate(12deg); }
+    .visual-stack:hover .s3 { transform: translate(-40px, 120px) rotate(8deg); }
+
     .profile-wrapper {
+        z-index: 10;
         position: relative;
         width: 320px;
         height: 320px;
@@ -221,6 +285,87 @@
     @keyframes float {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-20px); }
+    }
+
+    /* Urgency Banner */
+    .urgency-banner {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 50px;
+        color: #ffd54f;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        animation: fadeSlideDown 0.8s ease;
+    }
+
+    .pulse {
+        width: 8px;
+        height: 8px;
+        background: #ffd54f;
+        border-radius: 50%;
+        animation: pulse-yellow 2s infinite;
+    }
+
+    @keyframes pulse-yellow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(255, 213, 79, 0.7); }
+        50% { box-shadow: 0 0 0 8px rgba(255, 213, 79, 0); }
+    }
+
+    /* Proof Bar */
+    .proof-bar {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .proof-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-dim);
+    }
+
+    .proof-item .check { color: #10b981; font-weight: bold; }
+    .proof-item strong { color: var(--text); }
+
+    .headline-secondary {
+        display: block;
+        font-size: 0.7em;
+        color: var(--text);
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+
+    /* Trust Indicators */
+    .trust-section {
+        display: flex;
+        gap: 3rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .trust-number {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent-bright), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: block;
+    }
+
+    .trust-label {
+        color: var(--text-dim);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
     /* Buttons */
@@ -1011,20 +1156,79 @@
     /* MOBILE-SPECIFIC OVERRIDES           */
     /* ========================================= */
     @media (max-width: 900px) {
-        /* Hero: Stacked and Centered */
-        .hero-container { flex-direction: column-reverse; text-align: center; gap: 3rem; }
-        .hero-description { margin: 0 auto 2.5rem; }
-        
+        /* --- MOBILE HERO OPTIMIZATION --- */
+        .hero {
+            padding: 100px 1.5rem 60px 1.5rem; /* Space for fixed nav and footer */
+            min-height: auto;
+            display: block;
+        }
+
+        .hero-container {
+            flex-direction: column; /* Stacked: Visual on top or bottom */
+            text-align: center;
+            gap: 4rem;
+        }
+
+        /* Adjusting the Headline Scale */
+        h1 {
+            font-size: 2.2rem; /* Forced smaller for mobile */
+            line-height: 1.2;
+        }
+
+        .headline-secondary {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            margin: 0 auto 2rem auto;
+            padding: 0 10px;
+        }
+
+        /* Buttons should be easy to tap */
         .cta-buttons {
             flex-direction: column;
             width: 100%;
-            gap: 1rem;
+            max-width: 320px;
+            margin: 0 auto;
         }
         
-        .btn { width: 100%; display: block; text-align: center; }
-        .hero-text { flex: auto; }
-        .hero-visual { flex: auto; width: 100%; }
-        .profile-wrapper { width: 280px; height: 280px; }
+        .btn {
+            width: 100%;
+            padding: 1.2rem; /* Larger hit area */
+            display: block; text-align: center;
+        }
+
+        /* --- Visual & Snapshots Mobile Fix --- */
+        .hero-visual {
+            order: -1; /* Moves image above text on mobile for better "first impression" */
+            transform: scale(0.85); /* Slightly scale down the whole stack */
+            margin-bottom: -20px;
+            flex: auto; width: 100%;
+        }
+
+        .visual-stack { width: 260px; height: 260px; }
+        .profile-wrapper { width: 240px; height: 240px; }
+
+        /* Shrink the floating screenshots so they don't cover the profile */
+        .snapshot { width: 140px; height: 90px; }
+
+        /* Adjust individual snapshot positions for tighter mobile layout */
+        .s1 { --base-pos: translate(-70px, -50px) rotate(-10deg); }
+        .s2 { --base-pos: translate(70px, -40px) rotate(8deg); }
+        .s3 { --base-pos: translate(-10px, 70px) rotate(5deg); }
+
+        /* Trust indicators: stack them nicely */
+        .trust-section {
+            flex-direction: row;
+            justify-content: center;
+            gap: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.5rem;
+        }
+
+        .trust-number { font-size: 1.4rem; }
 
         /* Projects: 2-Column Tile Layout */
         .projects-grid {
@@ -1142,8 +1346,8 @@
     }
 
     @media (max-width: 900px) {
-        .hero { padding-top: 60px; }
         section { padding: 4rem 1rem; }
         .project-info-section { grid-template-columns: 4fr; gap: 2rem; }
         .project-header h1 { font-size: 2rem; }
+        .proof-bar { justify-content: center; }
 }
